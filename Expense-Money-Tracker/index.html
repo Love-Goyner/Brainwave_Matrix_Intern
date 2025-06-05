@@ -4,47 +4,90 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Money Tracker</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>💸 Money Tracker</h1>
+    <div class="header">
+      <h1><i class="fas fa-wallet"></i> Money Tracker</h1>
+      <div class="theme-toggle">
+        <i class="fas fa-moon"></i>
+        <label class="switch">
+          <input type="checkbox" id="theme-switch">
+          <span class="slider round"></span>
+        </label>
+        <i class="fas fa-sun"></i>
+      </div>
+    </div>
 
-    <div class="balance-box">
-      <h2>Balance: ₹<span id="balance">0.00</span></h2>
+    <div class="balance-box glassmorphism">
+      <h2>Current Balance</h2>
+      <p class="balance-amount" id="balance">₹0.00</p>
       <div class="summary">
-        <div class="income">
-          <h3>Income</h3>
-          <p class="money plus">+₹<span id="income">0.00</span></p>
+        <div class="income summary-card">
+          <div class="summary-icon">
+            <i class="fas fa-arrow-down"></i>
+          </div>
+          <div>
+            <h3>Income</h3>
+            <p class="money plus">+₹<span id="income">0.00</span></p>
+          </div>
         </div>
-        <div class="expense">
-          <h3>Expense</h3>
-          <p class="money minus">-₹<span id="expense">0.00</span></p>
+        <div class="expense summary-card">
+          <div class="summary-icon">
+            <i class="fas fa-arrow-up"></i>
+          </div>
+          <div>
+            <h3>Expense</h3>
+            <p class="money minus">-₹<span id="expense">0.00</span></p>
+          </div>
         </div>
       </div>
     </div>
 
-    <form id="transaction-form">
-      <input type="text" id="text" placeholder="Description" required />
-      <input type="number" id="amount" placeholder="Amount (+ for income, - for expense)" required />
-      <input type="text" id="category" placeholder="Category (e.g., Food, Salary)" />
-      <button type="submit">Add Transaction</button>
+    <form id="transaction-form" class="glassmorphism">
+      <h3>Add Transaction</h3>
+      <div class="form-group">
+        <input type="text" id="text" placeholder=" " required />
+        <label for="text">Description</label>
+      </div>
+      <div class="form-group">
+        <input type="number" id="amount" placeholder=" " required />
+        <label for="amount">Amount (+income, -expense)</label>
+      </div>
+      <div class="form-group">
+        <input type="text" id="category" placeholder=" " />
+        <label for="category">Category</label>
+      </div>
+      <button type="submit" class="btn-primary">
+        <i class="fas fa-plus"></i> Add Transaction
+      </button>
     </form>
 
-    <div class="filter-export">
-      <label for="filter-category">Filter by Category:</label>
-      <select id="filter-category">
-        <option value="all">All</option>
-      </select>
-      <button onclick="downloadCSV()">Export CSV</button>
+    <div class="filter-export glassmorphism">
+      <div class="filter-group">
+        <label for="filter-category"><i class="fas fa-filter"></i> Filter by Category:</label>
+        <select id="filter-category">
+          <option value="all">All Categories</option>
+        </select>
+      </div>
+      <button onclick="downloadCSV()" class="btn-secondary">
+        <i class="fas fa-file-export"></i> Export CSV
+      </button>
     </div>
 
-    <h3>History</h3>
-    <ul id="list" class="list"></ul>
+    <div class="history-section glassmorphism">
+      <h3><i class="fas fa-history"></i> Transaction History</h3>
+      <ul id="list" class="list"></ul>
+    </div>
 
-    <h3>Expenses Chart</h3>
-    <canvas id="expenseChart"></canvas>
+    <div class="chart-section glassmorphism">
+      <h3><i class="fas fa-chart-pie"></i> Expenses Breakdown</h3>
+      <canvas id="expenseChart"></canvas>
+    </div>
   </div>
 
   <script src="script.js"></script>

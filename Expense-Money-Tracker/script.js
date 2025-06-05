@@ -11,6 +11,7 @@ const filterSelect = document.getElementById("filter-category");
 let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
 let chart;
 
+
 function generateID() {
   return Math.floor(Math.random() * 1000000);
 }
