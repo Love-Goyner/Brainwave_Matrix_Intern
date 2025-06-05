@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Money Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>💸 Money Tracker</h1>
+
+    <div class="balance-box">
+      <h2>Balance: ₹<span id="balance">0.00</span></h2>
+      <div class="summary">
+        <div class="income">
+          <h3>Income</h3>
+          <p class="money plus">+₹<span id="income">0.00</span></p>
+        </div>
+        <div class="expense">
+          <h3>Expense</h3>
+          <p class="money minus">-₹<span id="expense">0.00</span></p>
+        </div>
+      </div>
+    </div>
+
+    <form id="transaction-form">
+      <input type="text" id="text" placeholder="Description" required />
+      <input type="number" id="amount" placeholder="Amount (+ for income, - for expense)" required />
+      <input type="text" id="category" placeholder="Category (e.g., Food, Salary)" />
+      <button type="submit">Add Transaction</button>
+    </form>
+
+    <div class="filter-export">
+      <label for="filter-category">Filter by Category:</label>
+      <select id="filter-category">
+        <option value="all">All</option>
+      </select>
+      <button onclick="downloadCSV()">Export CSV</button>
+    </div>
+
+    <h3>History</h3>
+    <ul id="list" class="list"></ul>
+
+    <h3>Expenses Chart</h3>
+    <canvas id="expenseChart"></canvas>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
