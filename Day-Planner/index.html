@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexaPlan - Modern Day Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-container">
+                <h1 class="logo" data-text="NexaPlan">NexaPlan</h1>
+                <div class="logo-bg"></div>
+            </div>
+            <div class="date-display">
+                <div class="current-date"></div>
+                <div class="current-time"></div>
+            </div>
+            <button class="add-task-btn" id="addTaskBtn">
+                <i class="fas fa-plus"></i> Add Task
+            </button>
+        </header>
+
+        <main class="app-main">
+            <div class="time-column">
+                <div class="time-slots"></div>
+            </div>
+            <div class="tasks-column">
+                <div class="tasks-container" id="tasksContainer">
+                    <div class="empty-state">
+                        <div class="empty-animation">
+                            <div class="circle"></div>
+                            <div class="line short"></div>
+                            <div class="line medium"></div>
+                            <div class="line long"></div>
+                        </div>
+                        <h3>No tasks yet</h3>
+                        <p>Click "Add Task" to get started</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="modal-overlay" id="taskModal">
+            <div class="modal-content">
+                <button class="close-modal">&times;</button>
+                <h2>Add New Task</h2>
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label for="taskTitle">Task Title</label>
+                        <input type="text" id="taskTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskTime">Time</label>
+                        <input type="time" id="taskTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskPriority">Priority</label>
+                        <select id="taskPriority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskCategory">Category</label>
+                        <select id="taskCategory">
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="health">Health</option>
+                            <option value="learning">Learning</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskNotes">Notes</label>
+                        <textarea id="taskNotes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Add Task</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="notification" id="notification"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
