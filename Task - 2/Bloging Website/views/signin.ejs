@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Sign In | YourSite</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+      
+      :root {
+        --signin-primary: #4361ee;
+        --signin-secondary: #3a0ca3;
+        --signin-accent: #f72585;
+        --signin-light: #f8f9fa;
+        --signin-dark: #212529;
+        --signin-gray: #6c757d;
+        --signin-error: #e63946;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f5f7fa;
+        color: var(--signin-dark);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .signin-container {
+        max-width: 500px;
+        margin: 2rem auto;
+        padding: 2.5rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        animation: signin-fadeIn 0.4s ease-out;
+      }
+      
+      @keyframes signin-fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .signin-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      
+      .signin-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--signin-dark);
+        margin-bottom: 0.5rem;
+        position: relative;
+      }
+      
+      .signin-title:after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 4px;
+        background: var(--signin-accent);
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+      }
+      
+      .signin-subtitle {
+        color: var(--signin-gray);
+        font-size: 0.95rem;
+      }
+      
+      .signin-form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+        color: var(--signin-dark);
+      }
+      
+      .signin-form-control {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        font-size: 1rem;
+        border: 1px solid #e9ecef;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        background-color: var(--signin-light);
+      }
+      
+      .signin-form-control:focus {
+        border-color: var(--signin-primary);
+        box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        outline: none;
+        background-color: white;
+      }
+      
+      .signin-form-text {
+        font-size: 0.85rem;
+        color: var(--signin-gray);
+        margin-top: 0.3rem;
+      }
+      
+      .signin-btn {
+        background-color: var(--signin-primary);
+        color: white;
+        border: none;
+        padding: 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .signin-btn:hover {
+        background-color: var(--signin-secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+      
+      .signin-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--signin-gray);
+      }
+      
+      .signin-footer a {
+        color: var(--signin-primary);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      
+      .signin-footer a:hover {
+        text-decoration: underline;
+      }
+      
+      .signin-input-group {
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
+      
+      .signin-input-icon {
+        position: absolute;
+        left: 1.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--signin-gray);
+      }
+      
+      .signin-form-control.with-icon {
+        padding-left: 3rem;
+      }
+      
+      .signin-forgot-password {
+        text-align: right;
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .signin-forgot-password a {
+        color: var(--signin-gray);
+        font-size: 0.85rem;
+        text-decoration: none;
+      }
+      
+      .signin-forgot-password a:hover {
+        color: var(--signin-primary);
+        text-decoration: underline;
+      }
+      
+      .signin-error {
+        color: var(--signin-error);
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        display: none;
+      }
+      
+      @media (max-width: 576px) {
+        .signin-container {
+          padding: 1.5rem;
+          margin: 1rem;
+        }
+        
+        .signin-title {
+          font-size: 1.7rem;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+    
+    <div class="signin-container">
+      <div class="signin-header">
+        <h1 class="signin-title">Welcome Back</h1>
+        <p class="signin-subtitle">Sign in to continue to your account</p>
+      </div>
+      
+      <form action="/user/signin" method="post">
+        <div class="signin-input-group">
+          <label for="email" class="signin-form-label">Email Address</label>
+          <div style="position: relative;">
+            <i class="fas fa-envelope signin-input-icon"></i>
+            <input 
+              type="email" 
+              name="email" 
+              class="signin-form-control with-icon" 
+              id="email" 
+              placeholder="your@email.com"
+              required
+            >
+          </div>
+          <div class="signin-form-text">We'll never share your email with anyone else.</div>
+        </div>
+        
+        <div class="signin-input-group">
+          <label for="password" class="signin-form-label">Password</label>
+          <div style="position: relative;">
+            <i class="fas fa-lock signin-input-icon"></i>
+            <input 
+              type="password" 
+              name="password" 
+              class="signin-form-control with-icon" 
+              id="password" 
+              placeholder="••••••••"
+              required
+            >
+          </div>
+          
+          <div class="signin-error" id="error-message"></div>
+        </div>
+        
+        <button type="submit" class="signin-btn">
+          <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> Sign In
+        </button>
+        
+        <div class="signin-footer">
+          Don't have an account? <a href="/user/signup">Sign up</a>
+        </div>
+      </form>
+    </div>
+    
+    <%- include('./partials/scripts') %>
+    
+    <script>
+      // Handle form submission errors (optional)
+      const urlParams = new URLSearchParams(window.location.search);
+      const error = urlParams.get('error');
+      
+      if (error) {
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.style.display = 'block';
+        
+        switch(error) {
+          case 'invalid_credentials':
+            errorMessage.textContent = 'Invalid email or password. Please try again.';
+            break;
+          case 'account_locked':
+            errorMessage.textContent = 'Account temporarily locked. Try again later or reset your password.';
+            break;
+          default:
+            errorMessage.textContent = 'An error occurred. Please try again.';
+        }
+        
+        // Add error class to inputs
+        document.getElementById('email').classList.add('error-input');
+        document.getElementById('password').classList.add('error-input');
+      }
+      
+      // Add error input styling
+      document.styleSheets[0].addRule('.error-input', 'border-color: var(--signin-error) !important;');
+    </script>
+  </body>
+</html>

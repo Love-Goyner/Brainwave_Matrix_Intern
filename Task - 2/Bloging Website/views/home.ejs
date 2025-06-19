@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>BlogHub - HomePage</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+      
+      :root {
+        --home-primary: #4361ee;
+        --home-secondary: #3f37c9;
+        --home-dark: #1f2937;
+        --home-light: #f9fafb;
+        --home-accent: #f72585;
+      }
+      
+      .home-body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f5f7fa;
+        color: var(--home-dark);
+        min-height: 100vh;
+      }
+      
+      .home-navbar {
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        background-color: white !important;
+      }
+      
+      .home-container {
+        padding: 2rem;
+      }
+      
+      .home-blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 1rem 0;
+      }
+      
+      .home-blog-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        transform: translateY(0);
+        opacity: 0;
+        animation: home-fadeInUp 0.6s backwards;
+      }
+      
+      @keyframes home-fadeInUp {
+        from {
+          opacity: 1;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .home-blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      }
+      
+      .home-blog-card:nth-child(1) { animation-delay: 0.1s; }
+      .home-blog-card:nth-child(2) { animation-delay: 0.2s; }
+      .home-blog-card:nth-child(3) { animation-delay: 0.3s; }
+      .home-blog-card:nth-child(4) { animation-delay: 0.4s; }
+      .home-blog-card:nth-child(5) { animation-delay: 0.5s; }
+      
+      .home-card-img {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+        transition: transform 0.5s ease;
+      }
+      
+      .home-blog-card:hover .home-card-img {
+        transform: scale(1.05);
+      }
+      
+      .home-card-body {
+        padding: 1.5rem;
+      }
+      
+      .home-card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: var(--home-dark);
+      }
+      
+      .home-card-text {
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      
+      .home-btn-primary {
+        background-color: var(--home-primary);
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+      }
+      
+      .home-btn-primary:hover {
+        background-color: var(--home-secondary);
+        transform: translateY(-2px);
+        color: white;
+      }
+
+      .home-page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      
+      .home-page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--home-dark);
+        position: relative;
+        display: inline-block;
+      }
+      
+      .home-page-title:after {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 4px;
+        background: var(--home-accent);
+        bottom: -10px;
+        left: 25%;
+        border-radius: 2px;
+      }
+      
+      .home-page-subtitle {
+        color: #6b7280;
+        margin-top: 1rem;
+      }
+      
+      .home-empty-state {
+        text-align: center;
+        padding: 3rem 0;
+      }
+      
+      .home-empty-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .home-empty-text {
+        color: #6b7280;
+      }
+      
+      @media (max-width: 768px) {
+        .home-blog-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .home-page-title {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="home-body">
+    <%- include('./partials/nav') %>
+    
+    <div class="home-container">
+      <div class="home-page-header">
+        <h1 class="home-page-title">Explore Our Blogs</h1>
+        <p class="home-page-subtitle">Discover amazing content curated just for you</p>
+      </div>
+      
+      <% if (blogs.length > 0) { %>
+        <div class="home-blog-grid">
+          <% blogs.forEach((blog, index) => { %>
+            <div class="home-blog-card">
+              <img src="<%= blog.coverImageURL %>" alt="<%= blog.title %>" class="home-card-img"/>
+              <div class="home-card-body">
+                <h5 class="home-card-title"><%= blog.title %></h5>
+                <p class="home-card-text"><%= blog.body.length > 150 ? blog.body.substring(0, 150) + '...' : blog.body %></p>
+                <a href="/blog/<%= blog._id %>" class="home-btn-primary">Read More</a>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="home-empty-state">
+          <h3 class="home-empty-title">No blogs found</h3>
+          <p class="home-empty-text">Check back later for new content!</p>
+        </div>
+      <% } %>
+    </div>
+    
+    <%- include('./partials/scripts') %>
+    
+    <script>
+      // Add intersection observer for scroll animations
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.home-blog-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = 1;
+              entry.target.style.transform = 'translateY(0)';
+            }
+          });
+        }, { threshold: 0.1 });
+        
+        cards.forEach(card => {
+          observer.observe(card);
+        });
+      });
+    </script>
+  </body>
+</html>

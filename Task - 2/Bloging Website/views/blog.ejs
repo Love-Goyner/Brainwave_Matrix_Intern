@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/head') %>
+  <title><%= blog.title %> | Blogify</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --gray-100: #f3f4f6;
+      --gray-800: #1f2937;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--gray-800);
+      line-height: 1.6;
+    }
+    
+    .blog-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    .blog-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+    
+    .blog-cover {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .blog-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    
+    .blog-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #6b7280;
+    }
+    
+    .blog-content {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+    
+    .author-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    .author-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    /* Comments Section */
+    .comments-section {
+      margin-top: 4rem;
+      max-width: 800px;
+    }
+    
+    .comment-form {
+      margin-bottom: 2rem;
+    }
+    
+    .comment-input {
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .comment-submit {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .comment-submit:hover {
+      background: var(--primary-dark);
+    }
+    
+    .comment-list {
+      margin-top: 2rem;
+    }
+    
+    .comment-card {
+      display: flex;
+      gap: 1rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .comment-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .comment-content {
+      flex: 1;
+    }
+    
+    .comment-author {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .comment-date {
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    
+    @media (max-width: 768px) {
+      .blog-header {
+        grid-template-columns: 1fr;
+      }
+      
+      .blog-cover {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('./partials/nav') %>
+  
+  <div class="blog-container">
+    <!-- Blog Header with Image Left/Content Right -->
+    <div class="blog-header">
+      <img src="<%= blog.coverImageURL %>" class="blog-cover" alt="Blog Cover">
+      
+      <div>
+        <h1 class="blog-title"><%= blog.title %></h1>
+        
+        <div class="blog-meta">
+          <span><i class="far fa-calendar-alt"></i> <%= new Date(blog.createdAt).toLocaleDateString() %></span>
+          <span><i class="far fa-comment"></i> <%= comments.length %> comments</span>
+        </div>
+        
+        <div class="blog-content"><%= blog.body %></div>
+        
+        <div class="author-card">
+          <img src="<%= blog.createdBy.profileImageURL %>" class="author-avatar" alt="Author">
+          <div>
+            <p class="text-sm text-gray-500">Written by</p>
+            <p class="font-medium"><%= blog.createdBy.fullName %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Comments Section Below -->
+    <div class="comments-section">
+      <h2 class="text-2xl font-bold mb-4">Comments (<%= comments.length %>)</h2>
+      
+      <% if (locals.user) { %>
+        <form action="/blog/comment/<%= blog._id %>" method="post" class="comment-form">
+          <textarea name="content" class="comment-input" placeholder="Write your comment..." rows="3" required></textarea>
+          <button type="submit" class="comment-submit">Post Comment</button>
+        </form>
+      <% } else { %>
+        <p class="text-gray-500 mb-6"><a href="/user/signin" class="text-primary">Sign in</a> to leave a comment</p>
+      <% } %>
+      
+      <div class="comment-list">
+        <% comments.forEach(comment => { %>
+          <div class="comment-card">
+            <img src="<%= comment.createdBy.profileImageURL %>" class="comment-avatar" alt="User Avatar">
+            <div class="comment-content">
+              <div class="comment-author"><%= comment.createdBy.fullName %></div>
+              <div class="comment-date"><%= new Date(comment.createdAt).toLocaleDateString() %></div>
+              <p><%= comment.content %></p>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

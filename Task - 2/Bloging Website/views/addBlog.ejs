@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Add New Blog</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+      
+      :root {
+        --blog-primary: #4361ee;
+        --blog-secondary: #3a0ca3;
+        --blog-accent: #f72585;
+        --blog-light: #f8f9fa;
+        --blog-dark: #212529;
+        --blog-gray: #6c757d;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f5f7fa;
+        color: var(--blog-dark);
+      }
+      
+      .blog-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        animation: blog-fadeIn 0.5s ease-out;
+      }
+      
+      @keyframes blog-fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .blog-form-title {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: var(--blog-dark);
+        position: relative;
+        padding-bottom: 0.5rem;
+      }
+      
+      .blog-form-title:after {
+        content: '';
+        position: absolute;
+        width: 80px;
+        height: 4px;
+        background: var(--blog-accent);
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+      }
+      
+      .blog-form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+        color: var(--blog-dark);
+      }
+      
+      .blog-form-control {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background-color: var(--blog-light);
+      }
+      
+      .blog-form-control:focus {
+        border-color: var(--blog-primary);
+        box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        outline: none;
+        background-color: white;
+      }
+      
+      .blog-form-control-file {
+        padding: 0.5rem;
+      }
+      
+      .blog-textarea {
+        min-height: 200px;
+        resize: vertical;
+      }
+      
+      .blog-btn-submit {
+        background-color: var(--blog-primary);
+        color: white;
+        border: none;
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        font-weight: 500;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: block;
+        width: 100%;
+        margin-top: 1.5rem;
+      }
+      
+      .blog-btn-submit:hover {
+        background-color: var(--blog-secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      
+      .blog-file-upload {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+      }
+      
+      .blog-file-upload-btn {
+        border: 2px dashed #ced4da;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background-color: var(--blog-light);
+      }
+      
+      .blog-file-upload-btn:hover {
+        border-color: var(--blog-primary);
+        background-color: rgba(67, 97, 238, 0.05);
+      }
+      
+      .blog-file-upload input[type="file"] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+      
+      .blog-file-preview {
+        margin-top: 1rem;
+        display: none;
+        text-align: center;
+      }
+      
+      .blog-file-preview img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      
+      @media (max-width: 768px) {
+        .blog-container {
+          margin: 1rem;
+          padding: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+    
+    <div class="blog-container">
+      <h1 class="blog-form-title">Create New Blog Post</h1>
+      
+      <form method="post" action="/blog" enctype="multipart/form-data">
+        <div class="blog-mb-4">
+          <label for="coverimage" class="blog-form-label">Cover Image</label>
+          <div class="blog-file-upload">
+            <div class="blog-file-upload-btn" id="fileUploadLabel">
+              <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--blog-gray); margin-bottom: 1rem;"></i>
+              <p>Click to upload or drag and drop</p>
+              <p class="text-muted">PNG, JPG, GIF (Max. 5MB)</p>
+            </div>
+            <input
+              type="file"
+              class="blog-form-control blog-form-control-file"
+              id="coverimage"
+              name="coverimage"
+              accept="image/*"
+              onchange="previewFile()"
+            />
+          </div>
+          <div class="blog-file-preview" id="filePreview">
+            <img id="previewImage" src="#" alt="Preview" />
+          </div>
+        </div>
+        
+        <div class="blog-mb-4">
+          <label for="title" class="blog-form-label">Title</label>
+          <input
+            type="text"
+            class="blog-form-control"
+            id="title"
+            name="title"
+            placeholder="Enter blog title"
+            required
+          />
+        </div>
+        
+        <div class="blog-mb-4">
+          <label for="body" class="blog-form-label">Content</label>
+          <textarea
+            class="blog-form-control blog-textarea"
+            id="body"
+            name="body"
+            placeholder="Write your blog content here..."
+            required
+          ></textarea>
+        </div>
+        
+        <button type="submit" class="blog-btn-submit">
+          <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Publish Blog
+        </button>
+      </form>
+    </div>
+    
+    <%- include('./partials/scripts') %>
+    
+    <script>
+      // File upload preview functionality
+      function previewFile() {
+        const preview = document.getElementById('previewImage');
+        const fileUploadLabel = document.getElementById('fileUploadLabel');
+        const filePreview = document.getElementById('filePreview');
+        const file = document.querySelector('input[type=file]').files[0];
+        const reader = new FileReader();
+        
+        reader.onloadend = function() {
+          preview.src = reader.result;
+          fileUploadLabel.style.display = 'none';
+          filePreview.style.display = 'block';
+        }
+        
+        if (file) {
+          reader.readAsDataURL(file);
+        } else {
+          preview.src = "";
+          fileUploadLabel.style.display = 'block';
+          filePreview.style.display = 'none';
+        }
+      }
+      
+      // Drag and drop functionality
+      const fileUpload = document.querySelector('.blog-file-upload');
+      
+      fileUpload.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileUpload.querySelector('.blog-file-upload-btn').style.borderColor = 'var(--blog-primary)';
+        fileUpload.querySelector('.blog-file-upload-btn').style.backgroundColor = 'rgba(67, 97, 238, 0.1)';
+      });
+      
+      fileUpload.addEventListener('dragleave', () => {
+        fileUpload.querySelector('.blog-file-upload-btn').style.borderColor = '#ced4da';
+        fileUpload.querySelector('.blog-file-upload-btn').style.backgroundColor = 'var(--blog-light)';
+      });
+      
+      fileUpload.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileUpload.querySelector('.blog-file-upload-btn').style.borderColor = '#ced4da';
+        fileUpload.querySelector('.blog-file-upload-btn').style.backgroundColor = 'var(--blog-light)';
+        
+        const input = fileUpload.querySelector('input[type=file]');
+        input.files = e.dataTransfer.files;
+        previewFile();
+      });
+    </script>
+  </body>
+</html>
